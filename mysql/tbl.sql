@@ -1,4 +1,4 @@
-﻿CREATE TABLE `tbl_structure` (
+CREATE TABLE `tbl_structure` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `text` varchar(128) NOT NULL,
   `infix` varchar(2048) NOT NULL,
@@ -24,7 +24,7 @@ ALTER TABLE tbl_paraphrase IMPORT TABLESPACE;
 
 load data local infile "D:/360/solution/mysql/tbl_paraphrase.csv" into table `tbl_paraphrase` character set utf8;
 
-CREATE TABLE `tbl_translation_copy` (
+CREATE TABLE `tbl_translation` (
   `x` varchar(512) NOT NULL,
   `y` varchar(256) NOT NULL,
   `training` tinyint(1) NOT NULL DEFAULT (1),
@@ -37,7 +37,7 @@ alter table tbl_translation PARTITION BY key() PARTITIONS 128;
 ALTER TABLE tbl_translation DISCARD TABLESPACE;
 ALTER TABLE tbl_translation IMPORT TABLESPACE;  
 
-load data local infile "D:/360/solution/mysql/tbl_translation.csv" into table `tbl_translation` character set utf8;
+load data local infile "D:/360/solution/corpus/mysql/tbl_translation.csv" into table `tbl_translation` character set utf8;
 
 CREATE TABLE `tbl_service` (
   `text` varchar(128) NOT NULL,
