@@ -1,0 +1,70 @@
+CREATE TABLE `cn_ner` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sent` varchar(64) NOT NULL,
+  `ner` varchar(128) NOT NULL,
+  `category` varchar(32) NOT NULL,
+  `training` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sent` (`sent`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `tbl_semantic_log` (
+  `keywords` varchar(200) NOT NULL,
+  `category` varchar(40) NOT NULL,
+  `semantic` varchar(500) DEFAULT NULL,
+  `updatetime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `operator` varchar(40) DEFAULT NULL,
+  `context` varchar(40) NOT NULL,
+  `code` varchar(30) NOT NULL,
+  `training` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`keywords`,`context`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='classification';
+
+CREATE TABLE `cn_paraphrase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `x` varchar(64) COLLATE utf8_bin NOT NULL,
+  `y` varchar(64) COLLATE utf8_bin NOT NULL,
+  `score` int(3) NOT NULL,
+  `training` tinyint(1) NOT NULL DEFAULT (1),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `x` (`x`,`y`),
+  CONSTRAINT `cn_paraphrase_check` CHECK ((`x` < `y`))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+CREATE TABLE `cn_phatics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sentence` varchar(128) NOT NULL,
+  `label` enum('NEUTRAL','PERTAIN') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sentence` (`sentence`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `cn_qatype` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sentence` varchar(128) NOT NULL,
+  `label` enum('QUERY','REPLY') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sentence` (`sentence`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `cn_structure` (
+  `id` int(11) NOT NULL,
+  `infix` varchar(2048) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+ALTER TABLE cn_ner DISCARD TABLESPACE;
+ALTER TABLE tbl_semantic_log DISCARD TABLESPACE;
+ALTER TABLE cn_paraphrase DISCARD TABLESPACE;
+ALTER TABLE cn_phatics DISCARD TABLESPACE;
+ALTER TABLE cn_qatype DISCARD TABLESPACE;
+ALTER TABLE cn_structure DISCARD TABLESPACE;
+
+ALTER TABLE cn_ner IMPORT TABLESPACE;  
+ALTER TABLE tbl_semantic_log IMPORT TABLESPACE;  
+ALTER TABLE cn_paraphrase IMPORT TABLESPACE;  
+ALTER TABLE cn_phatics IMPORT TABLESPACE;  
+ALTER TABLE cn_qatype IMPORT TABLESPACE;  
+ALTER TABLE cn_structure IMPORT TABLESPACE;  
+
